@@ -1,0 +1,29 @@
+{
+  "name": "auctionofpaintingsapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node starter.js",
+    "prepublish": "npm run build",
+    "flow": "flow"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "moment": "^2.22.2",
+    "morgan": "~1.9.0",
+    "pug": "2.0.0-beta11",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "flow-bin": "^0.86.0",
+    "flow-remove-types": "^1.2.3",
+    "webpack": "^4.25.1",
+    "webpack-cli": "^3.1.2"
+  }
+}

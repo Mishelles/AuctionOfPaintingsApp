@@ -1,0 +1,78 @@
+extends layout
+
+block title
+    title Страница администратора
+
+block content
+    .w3-row#auction_block
+        .w3-col.w3-container(style='width:25%')
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h1 Участники
+                .w3-container.w3-margin-top.w3-margin-bottom(style="overflow-y: scroll")
+                    each participant, id in participants
+                        .w3-card-4.w3-margin-bottom
+                            img.participant_image(src=participant.image_url alt='Фото участника' style="height:7vh")
+                            .w3-container.w3-center
+                                p.w3-large.participant_name= participant.name
+                            .w3-container
+                                p.w3-large Остаток средств:
+                                    span.w3-tag.w3-green.w3-padding.w3-margin-left.participant_cache(data-id=id)= participant.cash_reserve
+
+
+        .w3-col.w3-container(style='width:50%')
+            .w3-card-4#picture_container
+                header.w3-container.w3-blue
+                    h1 Картины
+                .w3-container.w3-margin-top.w3-margin-bottom#picture_block(style="max-height: 70vh; overflow-y: scroll")
+                    each painting, id in paintings
+                        .w3-card-4.w3-margin-bottom.painting_card.picture_card(data-id=id)
+                            .w3-container.w3-center
+                                img.current_picture(src= painting.image_url alt='Продаваемая картина' style="width: 100%")
+                            .w3-container.w3-center
+                                p.w3-xlarge.current_picture_title= painting.title
+                                p.w3-large.current_picture_author= painting.author
+                            .w3-container
+                                .w3-row
+                                    .w3-col.w3-half
+                                        p.w3-large Начальная цена:
+                                            span.w3-tag.w3-green.w3-margin-left.w3-padding.current_picture_starting_price= painting.starting_price
+                                    .w3-col.w3-half
+                                        p.w3-large Текущая цена:
+                                            span.w3-tag.w3-red.w3-margin-left.w3-padding.current_picture_price(data-id=id)= painting.starting_price
+                                .w3-row
+                                    .w3-col.w3-half
+                                        p.w3-large Мин. шаг:
+                                            span.w3-tag.w3-blue.w3-margin-left.w3-padding.current_picture_min_step= painting.min_step
+                                    .w3-col.w3-half
+                                        p.w3-large Макс. шаг:
+                                            span.w3-tag.w3-blue.w3-margin-left.w3-padding.current_picture_max_step= painting.max_step
+
+        .w3-col.w3-container(style='width:25%')#auction_process
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h1 Ход аукциона
+                .w3-container.w3-margin-top.w3-margin-bottom#alerts_container
+
+
+
+                footer.w3-container.w3-blue
+                    #auction_timer_block
+                        .w3-tag.w3-green.w3-margin.w3-padding.w3-large#auction_timer
+                            span Время с начала аукциона:
+                            span.w3-margin-left#days 00
+                            span :
+                            span#hours 00
+                            span :
+                            span#minutes 00
+                            span :
+                            span#seconds 00
+                    br
+                    #picture_timer_block
+                        .w3-tag.w3-green.w3-margin.w3-padding.w3-large#picture_timer
+                            span До окончания торга осталось:
+                            span#picture_minutes 00
+                            span :
+                            span#picture_seconds 00
+block js
+    script(src='/javascripts/admin.js')

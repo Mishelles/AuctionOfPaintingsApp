@@ -1,0 +1,67 @@
+{
+  "participants": {
+    "kjasdcjndckjansd": {
+      "name": "Михаил Сергеенков",
+      "cash_reserve": "501",
+      "image_url": "https://pp.userapi.com/c850128/v850128336/59853/QWTKRH-15Dk.jpg"
+    },
+    "deaf62e098f0b1541685029741": {
+      "name": "Линус Торвальдс",
+      "cash_reserve": "1000",
+      "image_url": "http://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/4a7332685d6d4878891ebbc77a2930ee.jpg"
+    },
+    "2d4cd5ab125ee1541685072768": {
+      "name": "Ричард Столлман",
+      "cash_reserve": "100500",
+      "image_url": "http://www.oyunder.org/wp-content/uploads/2015/02/richard_stallman.jpg"
+    }
+  },
+  "paintings": {
+    "e67498462367d1541684701683": {
+      "title": "Лес весной",
+      "author": "Шишкин",
+      "description": "Описание картины",
+      "image_url": "http://zoozel.ru/gallery/images/662890_kartina-shishkina-les-vesnoi.jpg",
+      "starting_price": "10",
+      "min_step": "1",
+      "max_step": "25",
+      "participate_in_auction": true
+    },
+    "722b6c9d530a91541684752840": {
+      "title": "Витязь",
+      "author": "Васнецов",
+      "description": "Описание картины",
+      "image_url": "https://wallbox.ru/wallpapers/main/201122/b020c607afe9995b198ee88d7d3b49ff.jpg",
+      "starting_price": "10",
+      "min_step": "1",
+      "max_step": "27",
+      "participate_in_auction": false
+    },
+    "916201f019fdd1541684851407": {
+      "title": "Морские мотивы",
+      "author": "Айвазовский",
+      "description": "Здесь должно быть описание картины Айвазовского",
+      "image_url": "http://design-kmv.ru/wp-content/gallery/aivazovski/1861_0.jpg",
+      "starting_price": "15000",
+      "min_step": "100",
+      "max_step": "1000",
+      "participate_in_auction": false
+    },
+    "a12b50f2e77dd1541684932447": {
+      "title": "Ковёр-самолёт",
+      "author": "Васнецов",
+      "description": "Описание картины Васнецова",
+      "image_url": "https://pbs.twimg.com/media/DYPjE_YXcAA9IJW.jpg",
+      "starting_price": "1000",
+      "min_step": "20",
+      "max_step": "150",
+      "participate_in_auction": true
+    }
+  },
+  "params": {
+    "datetime": "1542370500000",
+    "counting_time": "03:02",
+    "pause": "01:01",
+    "timeout": "00:30"
+  }
+}

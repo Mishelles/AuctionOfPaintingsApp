@@ -1,0 +1,108 @@
+extends layout
+
+block title
+    title Участие в аукционе картин
+
+block content
+    // Модальное окно выбора участника аукциона
+    #participant_modal.w3-modal
+        .w3-modal-content
+            .header.w3-container.w3-red
+                header.w3-container.w3-red
+                    h2 Для продолжения выберите участника аукциона
+            .w3-container.w3-center.w3-margin
+                select.w3-select#participant_selector
+                    option(value='' disabled='' selected='') Ваш выбор
+                    each participant, id in participants
+                        option(value=id)= participant.name
+
+            footer.w3-container.w3-red
+                a.w3-btn.w3-green.w3-margin.w3-padding.w3-large#join_auction(href="#") Подключиться к аукциону картин
+
+    #bought_pictures_modal.w3-modal
+        .w3-modal-content
+            .header.w3-container.w3-red
+                span.w3-button.w3-display-topright(onclick="document.getElementById('bought_pictures_modal').style.display='none'") &times;
+                header.w3-container.w3-red
+                    h2 Купленные картины
+            .w3-container.w3-center.w3-margin#bought_pictures_container
+
+    .w3-row#auction_block(style="display: none")
+        .w3-col.w3-container(style='width:25%')
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h1 Участник
+                .w3-container.w3-margin-top.w3-margin-bottom
+                    .w3-card-4
+                        img#participant_image(src='/images/blank.png' alt='Фото участника' style="width:100%")
+                        .w3-container.w3-center
+                            p.w3-large#participant_name Имя участника
+                        .w3-container
+                            p.w3-large Остаток средств:
+                                span.w3-tag.w3-green.w3-padding.w3-margin-left#participant_cache 100
+
+                footer.w3-container.w3-blue
+                    a.w3-margin.w3-btn.w3-green#bought_pictures_show(href="#") Мои покупки
+                    a.w3-margin.w3-btn.w3-red#logout(href="#") Выход
+                    br
+                    input.w3-input(type='number')#new_price
+                    a.w3-margin.w3-btn.w3-yellow#up_price(href="#") Поднять
+
+        .w3-col.w3-container(style='width:50%')
+            .w3-card-4#picture_container(style="display:none")
+                header.w3-container.w3-blue
+                    h1 Продаваемая картина
+                .w3-container.w3-margin-top.w3-margin-bottom#picture_block
+                    .w3-card-4
+                        .w3-container.w3-center
+                            img#current_picture(src='/images/blank.png' alt='Продаваемая картина' style="width: 100%")
+                        .w3-container.w3-center
+                            p.w3-xlarge#current_picture_title Название картины
+                            p.w3-large#current_picture_author Автор картины
+                        .w3-container
+                            .w3-row
+                                .w3-col.w3-half
+                                    p.w3-large Начальная цена:
+                                        span.w3-tag.w3-green.w3-margin-left.w3-padding#current_picture_starting_price 100
+                                .w3-col.w3-half
+                                    p.w3-large Текущая цена:
+                                        span.w3-tag.w3-red.w3-margin-left.w3-padding#current_picture_price 100
+                            .w3-row
+                                .w3-col.w3-half
+                                    p.w3-large Мин. шаг:
+                                        span.w3-tag.w3-blue.w3-margin-left.w3-padding#current_picture_min_step 100
+                                .w3-col.w3-half
+                                    p.w3-large Макс. шаг:
+                                        span.w3-tag.w3-blue.w3-margin-left.w3-padding#current_picture_max_step 100
+
+
+        .w3-col.w3-container(style='width:25%')#auction_process
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h1 Ход аукциона
+                .w3-container.w3-margin-top.w3-margin-bottom#alerts_container
+
+
+
+                footer.w3-container.w3-blue
+                    a.w3-margin.w3-btn.w3-red#apply(href="#") Подать заявку
+                    #auction_timer_block
+                        .w3-tag.w3-green.w3-margin.w3-padding.w3-large#auction_timer
+                            span Время с начала аукциона:
+                            span.w3-margin-left#days 00
+                            span :
+                            span#hours 00
+                            span :
+                            span#minutes 00
+                            span :
+                            span#seconds 00
+                    br
+                    #picture_timer_block
+                        .w3-tag.w3-green.w3-margin.w3-padding.w3-large#picture_timer
+                            span До окончания торга осталось:
+                            span#picture_minutes 00
+                            span :
+                            span#picture_seconds 00
+
+block js
+    script(src='/javascripts/index.js')
