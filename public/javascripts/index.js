@@ -2,8 +2,10 @@ const GET_PARTICIPANT_URL = '/api/get_participant';
 let socket = undefined;
 let current_participant_id = undefined;
 const notification = new Audio('/audio/notification.mp3');
+let full_timeout = undefined;
 
 let picture_timeout = undefined;
+let prev = 0;
 
 const displayPicture = (picture) => {
     $("#current_picture").attr("src", picture.image_url);
@@ -72,6 +74,14 @@ const startPictureCountDown = (timestamp) => {
         const now = new Date().getTime();
         const difference = picture_timeout - now;
 
+        if (full_timeout === undefined) {
+            full_timeout = difference;
+        }
+
+        prev = prev + 1000;
+
+        updateProgress(full_timeout, prev);
+
         const mins = Math.floor(((difference%(60*60*1000*24))%(60*60*1000))/(60*1000));
         const secs = Math.floor((((difference%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000);
 
@@ -82,9 +92,15 @@ const startPictureCountDown = (timestamp) => {
             clearInterval(interval);
             $("#picture_timer #picture_minutes").text('00');
             $("#picture_timer #picture_seconds").text('00');
+            prev = 0;
+            full_timeout = undefined;
         }
 
     }, 1000);
+};
+
+const updateProgress = (full_timeout, count) => {
+    $("#progressbar").progressbar({value: (count / full_timeout) * 100});
 };
 
 const startAuctionTimer = (start_time) => {
@@ -121,17 +137,25 @@ const initializeSocketConnection = (participant) => {
         displayPicture(response.payload['painting']);
         $("#picture_container").fadeIn();
         $("#picture_timer_block").show();
-        startPictureCountDown(response.payload.timeout)
+        startPictureCountDown(response.payload.timeout);
+        $("#progressbar").progressbar({value: 0});
+        $("#progressbar").fadeIn();
     });
     socket.on("pictureAuctionFinished", (response) => {
         response = JSON.parse(response);
         addMessage(response.message);
         $("#picture_container").fadeOut();
+        $("#progressbar").fadeOut();
     });
     socket.on("auctionFinished", (response) => {
         response = JSON.parse(response);
         addMessage(response.message);
         stopAuctionTimer();
+    });
+    socket.on("applyCompleted", (response) => {
+        response = JSON.parse(response);
+        addMessage(response.message);
+        $("#apply").fadeOut();
     });
     socket.on("changePrice", (response) => {
         response = JSON.parse(response);
@@ -189,6 +213,14 @@ $(document).ready(() => {
         location.reload();
     });
 
+    $("#apply").click(() => {
+        socket.json.emit("apply", JSON.stringify({
+            payload: {
+                participant_id: current_participant_id,
+            }
+        }));
+    });
+
     $("#bought_pictures_show").click(() => {
         $.ajax({
             url: '/api/participant_pictures' + `?participant_id=${current_participant_id}`,
@@ -212,7 +244,6 @@ $(document).ready(() => {
                         </div>
                     `));
                 }
-                console.log(response);
                 $("#bought_pictures_modal").fadeIn();
             },
             error: (e) => {

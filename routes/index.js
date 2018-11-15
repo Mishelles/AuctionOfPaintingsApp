@@ -1,3 +1,5 @@
+// @flow
+
 const express = require('express');
 const router = express.Router();
 
@@ -21,7 +23,11 @@ for (let id in auction.paintings) {
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    return res.render('index', {participants: auction.participants});
+    try {
+        return res.render('index', {participants: auction.participants});
+    } catch (e) {
+        return res.status(404).send('Not found');
+    }
 });
 
 router.get('/admin', function (req, res, next) {
@@ -174,6 +180,18 @@ io.sockets.on('connection', (socket) => {
         socket.broadcast.json.emit("message", JSON.stringify({
             message: {
                 text: `Участник ${JSON.parse(msg)['participant']['name']} присоединился к аукциону.`,
+                message_type: "default",
+                datetime: (new Date()).toLocaleTimeString()
+            }
+        }));
+    });
+
+    socket.on("apply", (msg) => {
+        const participant_id = JSON.parse(msg).payload['participant_id'];
+        const participant = participants[participant_id];
+        io.json.emit("applyCompleted", JSON.stringify({
+            message: {
+                text: `Участник ${participant.name} подал заявку.`,
                 message_type: "default",
                 datetime: (new Date()).toLocaleTimeString()
             }

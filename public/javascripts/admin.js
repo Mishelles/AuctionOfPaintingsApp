@@ -121,6 +121,10 @@ const initializeSocketConnection = (participant) => {
         addMessage(response.message);
         stopAuctionTimer();
     });
+    socket.on("applyCompleted", (response) => {
+        response = JSON.parse(response);
+        addMessage(response.message);
+    });
     socket.on("changePrice", (response) => {
         response = JSON.parse(response);
         $(`.current_picture_price[data-id="${response.payload.painting_id}"]`).text(response.payload.new_price);
