@@ -7,6 +7,7 @@ let full_timeout = undefined;
 let picture_timeout = undefined;
 let prev = 0;
 
+
 const displayPicture = (picture) => {
     $("#current_picture").attr("src", picture.image_url);
     $("#current_picture_title").text(picture.title);

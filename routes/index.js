@@ -14,6 +14,9 @@ let last_painting = undefined;
 const participants = Object.assign({}, auction.participants);
 let paintings = {};
 
+let auction_timeout = (new Date(parseInt(auction.params.datetime)).getTime()) - (new Date().getTime());
+console.log(auction_timeout);
+
 for (let id in auction.paintings) {
     if (auction.paintings[id].participate_in_auction) {
         paintings[id] = auction.paintings[id];
@@ -163,7 +166,7 @@ setTimeout(() => {
     auction_in_progress = true;
     auctionLoop();
 
-}, 10000);
+}, 15000);
 
 
 io.sockets.on('connection', (socket) => {
@@ -189,7 +192,7 @@ io.sockets.on('connection', (socket) => {
     socket.on("apply", (msg) => {
         const participant_id = JSON.parse(msg).payload['participant_id'];
         const participant = participants[participant_id];
-        io.json.emit("applyCompleted", JSON.stringify({
+        socket.json.emit("applyCompleted", JSON.stringify({
             message: {
                 text: `Участник ${participant.name} подал заявку.`,
                 message_type: "default",
@@ -200,7 +203,7 @@ io.sockets.on('connection', (socket) => {
 
     socket.on("voteNewPrice", (msg) => {
         const response = JSON.parse(msg);
-        const new_price = response.payload.new_price;
+        const new_price = parseInt(last_painting.current_price) + parseInt(response.payload.new_price);
         const participant = participants[response.payload.participant_id];
         let participant_can_vote = false;
 
@@ -218,6 +221,8 @@ io.sockets.on('connection', (socket) => {
                 participant_can_vote = true;
             }
         }
+
+        if(parseInt(response.payload.new_price) < 0) participant_can_vote = false;
 
         if (participant_can_vote) {
             last_painting.current_price = new_price;
